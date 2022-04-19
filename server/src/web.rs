@@ -96,7 +96,8 @@ fn register(req: &Request) -> Result<Response, AuthError> {
     let payload: RegisterPayload = serde_json::from_reader(body)?;
     verify_username(&payload.username)?;
     verify_ethaddr(&payload.ethaddr)?;   // new verify  -max
-    auth::register(&payload.username, &payload.password,&payload.ethaddr)?;
+    auth::register(&payload.username, &payload.password, &payload.ethaddr)?;
+    println!("register ok");
     Ok(Response::text("Ok"))
 }
 
@@ -106,7 +107,6 @@ fn generate_token(req: &Request) -> Result<Response, AuthError> {
     verify_username(&payload.username)?;
     let token = auth::generate_token(&payload.username, &payload.password)?;
     let response = SignInResponse { token };
-    println!("register ok");
     Ok(Response::json(&response))
 }
 
