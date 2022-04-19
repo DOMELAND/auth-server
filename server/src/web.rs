@@ -39,6 +39,7 @@ fn verify_username(username: &str) -> Result<(), AuthError> {
 fn verify_ethaddr(ethaddr: &str) -> Result<(), AuthError> {
     //Eth address save with the hex prefix ("0x"), so it's 42 characters length.
     if !(42 == ethaddr.len()) {   
+        println!("eth addr verify error");
         Err(AuthError::InvalidEthAddr(
             "Eth address must be between 42 characters with the hex prefix '0x'.".into(),
         ))
@@ -103,6 +104,7 @@ fn generate_token(req: &Request) -> Result<Response, AuthError> {
     verify_username(&payload.username)?;
     let token = auth::generate_token(&payload.username, &payload.password)?;
     let response = SignInResponse { token };
+    println!("register ok");
     Ok(Response::json(&response))
 }
 
