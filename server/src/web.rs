@@ -17,6 +17,10 @@ fn legal_char(c: char) -> bool {
     c.is_ascii_alphanumeric() || ['-', '_'].contains(&c)
 }
 
+fn legal_ethaddr(c: char) -> bool {
+    c.is_ascii_hexdigit()
+}
+
 fn verify_username(username: &str) -> Result<(), AuthError> {
     if !(3..=32).contains(&username.len()) {
         Err(AuthError::InvalidRequest(
@@ -25,6 +29,22 @@ fn verify_username(username: &str) -> Result<(), AuthError> {
     } else if !username.chars().all(legal_char) {
         Err(AuthError::InvalidRequest(
             "Illegal character in username.".into(),
+        ))
+    } else {
+        Ok(())
+    }
+}
+
+// add new verify fn -max
+fn verify_ethaddr(ethaddr: &str) -> Result<(), AuthError> {
+    //Eth address save with the hex prefix ("0x"), so it's 42 characters length.
+    if !(42 == ethaddr.len()) {   
+        Err(AuthError::InvalidEthAddr(
+            "Eth address must be between 42 characters with the hex prefix '0x'.".into(),
+        ))
+    } else if !ethaddr.chars().all(legal_ethaddr) {
+        Err(AuthError::InvalidEthAddr(
+            "Illegal character in Ethrum address.".into(),
         ))
     } else {
         Ok(())
@@ -72,7 +92,8 @@ fn register(req: &Request) -> Result<Response, AuthError> {
     let body = req.data().unwrap();
     let payload: RegisterPayload = serde_json::from_reader(body)?;
     verify_username(&payload.username)?;
-    auth::register(&payload.username, &payload.password)?;
+    verify_ethaddr(&payload.ethaddr)?;   // new verify  -max
+    auth::register(&payload.username, &payload.password,&payload.ethaddr)?;
     Ok(Response::text("Ok"))
 }
 

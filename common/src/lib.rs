@@ -36,10 +36,12 @@ impl AuthToken {
     }
 }
 
+// add ethaddr field.  -max.lee
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct RegisterPayload {
     pub username: String,
     pub password: String,
+    pub ethaddr: String,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]

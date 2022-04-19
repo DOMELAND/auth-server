@@ -14,6 +14,10 @@ subcommands:
                 required: true
                 display_order: 1
                 takes_value: true
+            - ethaddr:
+                required: true
+                display_order: 2
+                takes_value: true
             - auth:
                 help: The Auth server to use.
                 required: false

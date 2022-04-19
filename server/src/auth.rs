@@ -51,6 +51,7 @@ pub enum AuthError {
     Hash(HashError),
     Json(JsonError),
     InvalidRequest(String),
+    InvalidEthAddr(String),
     RateLimit,
 }
 
@@ -65,6 +66,7 @@ impl AuthError {
             Self::Hash(_) => 500,
             Self::Json(_) => 400,
             Self::InvalidRequest(_) => 400,
+            Self::InvalidEthAddr(_) => 400,
             Self::RateLimit => 429,
         }
     }
@@ -79,7 +81,7 @@ impl fmt::Display for AuthError {
                 Self::UserExists => "That username is already taken.".into(),
                 Self::UserDoesNotExist => "That user does not exist.".into(),
                 Self::InvalidLogin =>
-                    "The username + password combination was incorrect or the user does not exist."
+                    "The username + password + Eth_addr combination was incorrect or the user does not exist."
                         .into(),
                 Self::InvalidToken => "The given token is invalid.".into(),
                 Self::Db(err) => format!("Database error: {}", err),
@@ -87,6 +89,8 @@ impl fmt::Display for AuthError {
                 Self::Json(err) => format!("Error decoding JSON: {}", err),
                 Self::InvalidRequest(s) =>
                     format!("The request was invalid in some form. Reason: {}", s),
+                Self::InvalidEthAddr(s) =>
+                    format!("The given eth addr is invalid: {}", s),
                 Self::RateLimit => "You are sending too many requests. Please slow down.".into(),
             }
         )
@@ -113,13 +117,14 @@ impl From<JsonError> for AuthError {
     }
 }
 
-pub fn init_db() -> Result<(), AuthError> {
+pub fn init_db() -> Result<(), AuthError> {    //add ethaddr filed in users tables  -max
     db()?.execute(
         "
         CREATE TABLE IF NOT EXISTS users (
             uuid TEXT NOT NULL PRIMARY KEY,
             username TEXT NOT NULL UNIQUE,
             display_username TEXT NOT NULL UNIQUE,
+            ethaddr TEXT NOT NULL UNIQUE,
             pwhash TEXT NOT NULL
         )
     ",
@@ -159,17 +164,20 @@ pub fn uuid_to_username(uuid: &Uuid) -> Result<String, AuthError> {
     result
 }
 
-pub fn register(username_unfiltered: &str, password: &str) -> Result<(), AuthError> {
+// add new parameter ethaddr -max
+pub fn register(username_unfiltered: &str, password: &str, ethaddr_unfiltered: &str) -> Result<(), AuthError> {
     let username = decapitalize(username_unfiltered);
+    let ethaddr = decapitalize(ethaddr_unfiltered);
     if user_exists(&username)? {
         return Err(AuthError::UserExists);
     }
+
     let uuid = Uuid::new_v4().to_simple().to_string();
     let hconfig = argon2::Config::default();
     let pwhash = argon2::hash_encoded(password.as_bytes(), &salt(), &hconfig)?;
     db()?.execute(
-        "INSERT INTO users (uuid, username, display_username, pwhash) VALUES(?1, ?2, ?3, ?4)",
-        params![uuid, &username, username_unfiltered, pwhash],
+        "INSERT INTO users (uuid, username, display_username, ethaddr, pwhash) VALUES(?1, ?2, ?3, ?4, ?5)",
+        params![uuid, &username, username_unfiltered, ethaddr, pwhash],
     )?;
     Ok(())
 }
