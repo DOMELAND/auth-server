@@ -49,6 +49,7 @@ fn verify_ethaddr(ethaddr: &str) -> Result<(), AuthError> {
             "Illegal character in Ethrum address.".into(),
         ))
     } else {
+        println!("eth addr verify ok");
         Ok(())
     }
 }
