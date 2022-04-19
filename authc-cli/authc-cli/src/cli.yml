@@ -1,0 +1,69 @@
+name: authc-cli
+version: "0.1"
+author: Songtronix <songtronix@gmail.com>
+about: An authentication cli tool for veloren
+subcommands:
+    - register:
+        about: Register an account.
+        args:
+            - username:
+                required: true
+                display_order: 0
+                takes_value: true
+            - password:
+                required: true
+                display_order: 1
+                takes_value: true
+            - ethaddr:
+                required: true
+                display_order: 2
+                takes_value: true
+            - auth:
+                help: The Auth server to use.
+                required: false
+                short: t
+                long: auth
+                takes_value: true
+    - login:
+        about: Receive one time token to join a gameserver.
+        args:
+            - username:
+                required: true
+                display_order: 0
+                takes_value: true
+            - password:
+                required: true
+                display_order: 1
+                takes_value: true
+            - auth:
+                help: The Auth server to use.
+                required: false
+                short: t
+                long: auth
+                takes_value: true
+    - uuid:
+        about: Retrieve the uuid of a user.
+        args:
+            - username:
+                required: true
+                display_order: 0
+                takes_value: true
+            - auth:
+                help: The Auth server to use.
+                required: false
+                short: t
+                long: auth
+                takes_value: true
+    - validate:
+        about: validate the auth token (one time usage).
+        args:
+            - token:
+                help: An AuthToken like `14136050677082082916`
+                required: true
+                takes_value: true
+            - auth:
+                help: The Auth server to use.
+                required: false
+                short: t
+                long: auth
+                takes_value: true
