@@ -117,6 +117,7 @@ fn verify(req: &Request) -> Result<Response, AuthError> {
 pub fn start() {
     let addr = "0.0.0.0:19253";
     debug!("Starting webserver on {}", addr);
+    println!("ok Starting webserver on {}", addr);
 
     start_server(addr, move |request| {
         debug!("[{}] -> {}", remote(request), request.url());
