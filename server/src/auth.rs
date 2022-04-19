@@ -169,16 +169,19 @@ pub fn register(username_unfiltered: &str, password: &str, ethaddr_unfiltered: &
     let username = decapitalize(username_unfiltered);
     let ethaddr = decapitalize(ethaddr_unfiltered);
     if user_exists(&username)? {
+        println!("user exists");
         return Err(AuthError::UserExists);
     }
-
+    
     let uuid = Uuid::new_v4().to_simple().to_string();
     let hconfig = argon2::Config::default();
     let pwhash = argon2::hash_encoded(password.as_bytes(), &salt(), &hconfig)?;
+    println!("user go");
     db()?.execute(
         "INSERT INTO users (uuid, username, display_username, ethaddr, pwhash) VALUES(?1, ?2, ?3, ?4, ?5)",
         params![uuid, &username, username_unfiltered, ethaddr, pwhash],
     )?;
+    println!("user go2");
     Ok(())
 }
 
