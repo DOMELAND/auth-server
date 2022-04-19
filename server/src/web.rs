@@ -44,6 +44,7 @@ fn verify_ethaddr(ethaddr: &str) -> Result<(), AuthError> {
             "Eth address must be between 42 characters with the hex prefix '0x'.".into(),
         ))
     } else if !ethaddr.chars().all(legal_ethaddr) {
+        println!("eth addr verify error2");
         Err(AuthError::InvalidEthAddr(
             "Illegal character in Ethrum address.".into(),
         ))
