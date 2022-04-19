@@ -90,6 +90,7 @@ fn uuid_to_username(req: &Request) -> Result<Response, AuthError> {
 }
 
 fn register(req: &Request) -> Result<Response, AuthError> {
+    println!("Server register process....");
     let body = req.data().unwrap();
     let payload: RegisterPayload = serde_json::from_reader(body)?;
     verify_username(&payload.username)?;
