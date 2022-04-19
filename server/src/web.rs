@@ -18,7 +18,7 @@ fn legal_char(c: char) -> bool {
 }
 
 fn legal_ethaddr(c: char) -> bool {
-    c.is_ascii_hexdigit()
+    c.is_ascii_hexdigit() || ['0', 'x'].contains(&c)
 }
 
 fn verify_username(username: &str) -> Result<(), AuthError> {
@@ -39,12 +39,12 @@ fn verify_username(username: &str) -> Result<(), AuthError> {
 fn verify_ethaddr(ethaddr: &str) -> Result<(), AuthError> {
     //Eth address save with the hex prefix ("0x"), so it's 42 characters length.
     if !(42 == ethaddr.len()) {   
-        println!("eth addr verify error");
+        println!("eth addr verify error 1");
         Err(AuthError::InvalidEthAddr(
             "Eth address must be between 42 characters with the hex prefix '0x'.".into(),
         ))
     } else if !ethaddr.chars().all(legal_ethaddr) {
-        println!("eth addr verify error2");
+        println!("eth addr verify error 2");
         Err(AuthError::InvalidEthAddr(
             "Illegal character in Ethrum address.".into(),
         ))
