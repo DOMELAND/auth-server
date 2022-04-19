@@ -1,6 +1,6 @@
 # auth
 
-This is the implementation of the auth server and command-line client for Veloren.
+This is the implementation of the auth server and command-line client for Domeland/Veloren.
 
 ## Dependencies
 
