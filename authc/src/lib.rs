@@ -47,6 +47,7 @@ impl AuthClient {
         };
         let ep = self.provider.join("register")?;
         self.client.post(ep).json(&data).send()?;
+        println!("register posted request");
         Ok(())
     }
 
