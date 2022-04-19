@@ -1,0 +1,7 @@
+[workspace]
+members = [
+    "authc",
+    "authc-cli",
+    "common",
+    "server",
+]

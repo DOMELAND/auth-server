@@ -1,0 +1,10 @@
+version: "3.1"
+services:
+  auth:
+    container_name: auth-server
+    restart: always
+    image: auth-server:latest
+    ports:
+      - "19253:19253"
+    volumes:
+      - "/opt/veloren-auth/data:/opt/veloren-auth/data"

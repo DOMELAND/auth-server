@@ -1,0 +1,10 @@
+[package]
+name = "auth-common"
+version = "0.1.0"
+authors = ["Acrimon <joel.wejdenstal@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+uuid = { version = "0.8.1", default-features = false, features = ["serde", "v4"] }
+serde = { version = "1.0.99", default-features = false, features = ["derive"] }
+rand = "0.7.0"

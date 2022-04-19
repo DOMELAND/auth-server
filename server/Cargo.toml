@@ -1,0 +1,17 @@
+[package]
+name = "auth-server"
+version = "0.1.0"
+authors = ["Acrimon <joel.wejdenstal@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+uuid = { version = "0.8.1", default-features = false, features = ["serde", "v4"] }
+auth-common = { path = "../common" }
+rouille = "3.0.0"
+serde_json = "1.0.44"
+rust-argon2 = "0.8.2"
+rusqlite = { version = "0.21.0", features = ["bundled"] }
+rand = "0.7.2"
+lazy_static = "1.4.0"
+log = "0.4.8"
+env_logger = "0.7.1"
