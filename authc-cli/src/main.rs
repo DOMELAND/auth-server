@@ -14,7 +14,7 @@ fn main() {
             let nonce = get_arg(&args, "nonce", "Please specify the nonce string.");
             let auth = set_auth_server(&args);
 
-            if let Err(e) = auth.register(&username, &password, &ethaddr) {
+            if let Err(e) = auth.register(&username, &password, &ethaddr, &nonce) {
                 exit_with(format!("Register failed with: {}", e));
             }
             println!("Successfully register req sended :{}", username);
