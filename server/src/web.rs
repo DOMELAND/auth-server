@@ -64,7 +64,7 @@ fn verify_ethaddr(ethaddr: &str) -> Result<(), AuthError> {
 // add new verify fn -max
 fn verify_nonce(nonce: &str) -> Result<(), AuthError> {
     //nonce is uint64, so it's 3~64 characters length.
-    if !(5..=10).contains(&nonce.len()) { 
+    if !(3..=10).contains(&nonce.len()) { 
         println!("nonce verify error 1");
         Err(AuthError::InvalidNonce(
             "nonce must be uint64 in digit-chars, so we special it is 3~10 digit char length.".into(),
