@@ -111,6 +111,6 @@ pub struct EthLookupPayload {
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EthLookupResponse {
-    pub username: Sting,
+    pub username: String,
     pub uuid: Uuid,
 }
