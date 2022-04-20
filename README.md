@@ -19,10 +19,10 @@ You can run a local server with the following command: `cargo run`.
 For a deployment-ready server, you can build docker image using `./build-server-dockerimage.sh` or without cloning the repo `docker build -t auth-server:latest https://gitlab.com/veloren/auth.git`. Docker will have to be installed.
 
 ### Run the auth server as a service using pm2
-###### You can install PM2 , and use pm2 run the auth-server as a service. 
-###### First, install PM2 : `npm install pm2@latest -g`
-###### Then, run auth-server by PM2 : `pm2 start target/debug/auth-server`
-###### ore PM2 infomation: https://pm2.keymetrics.io/docs/usage/quick-start/ 
+ You can install PM2 , and use pm2 run the auth-server as a service. <br>
+ First, install PM2 : `npm install pm2@latest -g` <br>
+ Then, run auth-server by PM2 : `pm2 start target/debug/auth-server`<br>
+ More PM2 infomation: https://pm2.keymetrics.io/docs/usage/quick-start/ <br>
 
 #### Deployment notice
 To keep your data secured, it is essential to setup the server to be connected to through a public network run behind a TLS terminator such as nginx
