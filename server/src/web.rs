@@ -23,6 +23,10 @@ fn legal_ethaddr(c: char) -> bool {
     c.is_ascii_hexdigit() || ['0', 'x'].contains(&c)
 }
 
+fn legal_digit(c: char) -> bool {
+    c.is_ascii_digit()
+}
+
 fn verify_username(username: &str) -> Result<(), AuthError> {
     if !(3..=32).contains(&username.len()) {
         Err(AuthError::InvalidRequest(
@@ -55,6 +59,27 @@ fn verify_ethaddr(ethaddr: &str) -> Result<(), AuthError> {
         Ok(())
     }
 }
+
+
+// add new verify fn -max
+fn verify_nonce(nonce: &str) -> Result<(), AuthError> {
+    //nonce is uint64, so it's 3~64 characters length.
+    if !(3..=64).contains(&nonce.len()) { 
+        println!("nonce verify error 1");
+        Err(AuthError::InvalidEthAddr(
+            "nonce must be uint64 in string form, so we special it is 3~64 characters length.".into(),
+        ))
+    } else if !nonce.chars().all(legal_digit) {
+        println!("nonce verify error 2");
+        Err(AuthError::InvalidEthAddr(
+            "Illegal character in nonce(uint64 format) string.".into(),
+        ))
+    } else {
+        println!("nonce string (uint64 format) verify ok");
+        Ok(())
+    }
+}
+
 
 fn ratelimit(
     req: &Request,
@@ -130,7 +155,8 @@ fn register(req: &Request) -> Result<Response, AuthError> {
     let payload: RegisterPayload = serde_json::from_reader(body)?;
     verify_username(&payload.username)?;
     verify_ethaddr(&payload.ethaddr)?;   // new verify  -max
-    auth::register(&payload.username, &payload.password, &payload.ethaddr)?;
+    verify_nonce(&payload.nonce)?;   // new verify  -max   
+    auth::register(&payload.username, &payload.password, &payload.ethaddr, &payload.nonce)?;
     println!("register ok");
     Ok(Response::text("Ok"))
 }
