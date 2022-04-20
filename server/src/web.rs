@@ -3,7 +3,7 @@ use crate::ratelimit::RateLimiter;
 use auth_common::{
     RegisterPayload, SignInPayload, SignInResponse, UsernameLookupPayload, UsernameLookupResponse,
     UuidLookupPayload, UuidLookupResponse, ValidityCheckPayload, ValidityCheckResponse, 
-    EthLookupResponse, EthDoesNotExist
+    EthLookupResponse, EthLookupPayload
 };
 use lazy_static::lazy_static;
 use log::*;
