@@ -128,6 +128,8 @@ pub fn init_db() -> Result<(), AuthError> {    //add ethaddr filed in users tabl
             username TEXT NOT NULL UNIQUE,
             display_username TEXT NOT NULL UNIQUE,
             ethaddr TEXT NOT NULL UNIQUE,
+            nonce TEXT DEFAULT '0' NOT NULL,     
+            actived INTEGER DEFAULT -1 NOT NULL,
             pwhash TEXT NOT NULL
         )
     ",
@@ -194,6 +196,17 @@ pub fn eth_to_username(ethaddr_unfiltered: &str) -> Result<String, AuthError> {
     result
 }
 
+pub fn eth_to_nonce(ethaddr_unfiltered: &str) -> Result<String, AuthError> {
+    let ethaddr = decapitalize(ethaddr_unfiltered);
+    let db = db()?;
+    let mut stmt = db.prepare_cached("SELECT nonce FROM users WHERE ethaddr == ?1")?;
+    let result = stmt
+        .query_map(params![&ethaddr], |row| row.get::<_, String>(0))?
+        .filter_map(|s| s.ok())
+        .next()
+        .ok_or(AuthError::EthDoesNotExist);
+    result
+}
 
 pub fn username_to_eth(username_unfiltered: &str) -> Result<String, AuthError> {
     let username = decapitalize(username_unfiltered);

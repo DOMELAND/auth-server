@@ -11,6 +11,7 @@ fn main() {
             let username = get_arg(&args, "username", "Please specify the username.");
             let password = get_arg(&args, "password", "Please specify the password.");
             let ethaddr = get_arg(&args, "ethaddr", "Please specify the ethrum address.");
+            let nonce = get_arg(&args, "nonce", "Please specify the nonce string.");
             let auth = set_auth_server(&args);
 
             if let Err(e) = auth.register(&username, &password, &ethaddr) {
