@@ -175,6 +175,7 @@ pub fn eth_to_uuid(ethaddr_unfiltered: &str) -> Result<Uuid, AuthError> {
     let result = stmt
         .query_map(params![&ethaddr], |row| row.get::<_, String>(0))?
         .filter_map(|s| s.ok())
+        .filter_map(|s| Uuid::parse_str(&s).ok())
         .next()
         .ok_or(AuthError::EthDoesNotExist);
     result
