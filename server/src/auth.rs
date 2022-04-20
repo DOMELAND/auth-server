@@ -60,6 +60,7 @@ impl AuthError {
         match self {
             Self::UserExists => 400,
             Self::UserDoesNotExist => 400,
+            Self::EthDoesNotExist => 400,
             Self::InvalidLogin => 400,
             Self::InvalidToken => 400,
             Self::Db(_) => 500,
@@ -80,6 +81,7 @@ impl fmt::Display for AuthError {
             match self {
                 Self::UserExists => "That username is already taken.".into(),
                 Self::UserDoesNotExist => "That user does not exist.".into(),
+                Self::EthDoesNotExist => "That ethereum address does not exist.".into(),
                 Self::InvalidLogin =>
                     "The username + password + Eth_addr combination was incorrect or the user does not exist."
                         .into(),
@@ -161,6 +163,32 @@ pub fn uuid_to_username(uuid: &Uuid) -> Result<String, AuthError> {
         .filter_map(|s| s.ok())
         .next()
         .ok_or(AuthError::UserDoesNotExist);
+    result
+}
+
+
+pub fn eth_to_uuid(ethaddr_unfiltered: &str) -> Result<Uuid, AuthError> {
+    let ethaddr = decapitalize(ethaddr_unfiltered);
+    let db = db()?;
+    let mut stmt = db.prepare_cached("SELECT uuid FROM users WHERE ethaddr == ?1")?;
+    let result = stmt
+        .query_map(params![&ethaddr], |row| row.get::<_, String>(0))?
+        .filter_map(|s| s.ok())
+        .next()
+        .ok_or(AuthError::EthDoesNotExist);
+    result
+}
+
+
+pub fn eth_to_username(ethaddr_unfiltered: &str) -> Result<String, AuthError> {
+    let ethaddr = decapitalize(ethaddr_unfiltered);
+    let db = db()?;
+    let mut stmt = db.prepare_cached("SELECT display_username FROM users WHERE ethaddr == ?1")?;
+    let result = stmt
+        .query_map(params![&ethaddr], |row| row.get::<_, String>(0))?
+        .filter_map(|s| s.ok())
+        .next()
+        .ok_or(AuthError::EthDoesNotExist);
     result
 }
 

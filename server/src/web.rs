@@ -72,14 +72,15 @@ fn remote(req: &Request) -> IpAddr {
 }
 
 fn ping(req: &Request) -> Response {
-    Response::text(format!("Ping! {}", remote(req).to_string()))
+    Response::text(format!("Pong! {}", remote(req).to_string()))
 }
 
 fn username_to_uuid(req: &Request) -> Result<Response, AuthError> {
     let body = req.data().unwrap();
     let payload: UuidLookupPayload = serde_json::from_reader(body)?;
     let uuid = auth::username_to_uuid(&payload.username)?;
-    let response = UuidLookupResponse { uuid };
+    let ethaddr = auth::username_to_uuid(&payload.ethaddr)?;
+    let response = UuidLookupResponse { uuid, ethaddr };
     Ok(Response::json(&response))
 }
 
@@ -90,6 +91,17 @@ fn uuid_to_username(req: &Request) -> Result<Response, AuthError> {
     let response = UsernameLookupResponse { username };
     Ok(Response::json(&response))
 }
+
+
+fn eth_to_user(req: &Request) -> Result<Response, AuthError> {
+    let body = req.data().unwrap();
+    let payload: EthLookupPayload = serde_json::from_reader(body)?;
+    let uuid = auth::eth_to_uuid(&payload.ethaddr)?;
+    let username = auth::eth_to_username(&payload.ethaddr)?;
+    let response = EthLookupResponse { username, uuid };
+    Ok(Response::json(&response))
+}
+
 
 fn register(req: &Request) -> Result<Response, AuthError> {
     println!("Server register process....");
@@ -135,6 +147,7 @@ pub fn start() {
                 let result = match path {
                     "/username_to_uuid" => username_to_uuid(request),
                     "/uuid_to_username" => uuid_to_username(request),
+                    "/eth_to_userinfo" => eth_to_user(request),
                     "/register" => ratelimit(request, register),
                     "/generate_token" => ratelimit(request, generate_token),
                     "/verify" => verify(request),
