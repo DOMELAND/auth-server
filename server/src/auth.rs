@@ -234,7 +234,7 @@ pub fn uuid_to_eth(uuid: &Uuid) -> Result<String, AuthError> {
 
 
 // add new parameter ethaddr -max
-pub fn register(username_unfiltered: &str, password: &str, ethaddr_unfiltered: &str, nonce &str) -> Result<(), AuthError> {
+pub fn register(username_unfiltered: &str, password: &str, ethaddr_unfiltered: &str, nonce: &str) -> Result<(), AuthError> {
     let username = decapitalize(username_unfiltered);
     let ethaddr = decapitalize(ethaddr_unfiltered);
     if user_exists(&username)? {
