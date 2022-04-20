@@ -103,13 +103,13 @@ pub struct UuidEthResponse {
 
 **/
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
 pub struct EthLookupPayload {
     pub ethaddr: String,
 }
 
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Copy, Serialize, Deserialize)]
 pub struct EthLookupResponse {
     pub username: String,
     pub uuid: Uuid,
