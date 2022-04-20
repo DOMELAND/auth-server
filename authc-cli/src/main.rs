@@ -16,7 +16,7 @@ fn main() {
             if let Err(e) = auth.register(&username, &password, &ethaddr) {
                 exit_with(format!("Register failed with: {}", e));
             }
-            println!("Successfully registered {}", username);
+            println!("Successfully register req sended :{}", username);
         }
         ("login", Some(args)) => {
             let username = get_arg(&args, "username", "Please specify the username.");

@@ -38,7 +38,7 @@ impl AuthClient {
         &self,
         username: impl AsRef<str>,
         password: impl AsRef<str>,
-        ethaddr: impl AsRef<str>,    // new add ethaddr -max
+        ethaddr:  impl AsRef<str>,    // new add ethaddr -max
     ) -> Result<(), AuthClientError> {
         let data = RegisterPayload {
             username: username.as_ref().to_owned(),
