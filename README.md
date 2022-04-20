@@ -23,3 +23,18 @@ A docker compose file is also provided to provide the auth server as a service. 
 
 #### Deployment notice
  To keep your data secured, it is essential to setup the server to be connected to through a public network run behind a TLS terminator such as nginx
+
+### Test   -- max 
+ To test the DOMELAND Account web sevice, follow is a case ( tools: postman):
+
+ URL:  http://localhost:19253/register
+ Method: Post
+ Body (Json):
+ 
+ {
+   "username":"max123",
+   "password":"123456",
+   "ethaddr":"0x9c5Eb6CcB92e551ec1671cdafF7b55d44A28615b"
+} 
+ 
+
