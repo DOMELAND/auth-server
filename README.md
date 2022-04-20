@@ -20,9 +20,9 @@ For a deployment-ready server, you can build docker image using `./build-server-
 
 ### Run the auth server as a service using pm2
  You can install PM2 , and use pm2 run the auth-server as a service. <br>
- First, install PM2 : `npm install pm2@latest -g` <br>
- Then, run auth-server by PM2 : `pm2 start target/debug/auth-server`<br>
- More PM2 infomation: https://pm2.keymetrics.io/docs/usage/quick-start/ <br>
+ 1. first install PM2 : `npm install pm2@latest -g` <br>
+ 2. then run auth-server by PM2 : `pm2 start target/debug/auth-server`<br>
+ 3. more PM2 infomation: https://pm2.keymetrics.io/docs/usage/quick-start/ <br>
 
 #### Deployment notice
 To keep your data secured, it is essential to setup the server to be connected to through a public network run behind a TLS terminator such as nginx
