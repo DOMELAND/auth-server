@@ -108,8 +108,24 @@ Body (Json):
 }
 ```
 
+##### API: Active user recorder & reset nonce velue
+```
+URL: http://localhost:19253/eth_active
+Method: POST
+Body (Json):
+{
+       "ethaddr": "0x8c5Eb6CcB92e551ec1671cdafF7b55d44A28615a",
+       "nonce": "974536234064543"
+}
+```
+
+
 ##### API: query userinfo by ethereum address
+<<<<<<< HEAD
 ###### Return userinfo include "username"、"uuid"、"nonce"
+=======
+###### Return userinfo include "username"、"uuid"、"nonce"、"actived"
+>>>>>>> dev
 ```
 URL: http://localhost:19253/eth_to_info
 Method: POST

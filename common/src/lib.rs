@@ -93,12 +93,20 @@ pub struct EthLookupPayload {
     pub ethaddr: String,
 }
 
+// new struct --max
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct EthActivePayload {
+    pub ethaddr: String,
+    pub nonce: String,
+}
+
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EthLookupResponse {
     pub username: String,
     pub uuid: Uuid,
     pub nonce: String,
+    pub actived: i32,
 }
 
 
