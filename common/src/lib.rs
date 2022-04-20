@@ -86,6 +86,7 @@ pub struct UsernameLookupResponse {
     pub username: String,
 }
 
+// new struct --max
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EthLookupPayload {
     pub ethaddr: String,
@@ -96,4 +97,17 @@ pub struct EthLookupPayload {
 pub struct EthLookupResponse {
     pub username: String,
     pub uuid: Uuid,
+}
+
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct UserinfoLookupResponse {
+    pub uuid: Uuid,
+    pub ethaddr: String,
+}
+ 
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct Userinfo2LookupResponse {
+    pub username: String,
+    pub ethaddr: String,
 }

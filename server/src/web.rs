@@ -3,7 +3,8 @@ use crate::ratelimit::RateLimiter;
 use auth_common::{
     RegisterPayload, SignInPayload, SignInResponse, UsernameLookupPayload, UsernameLookupResponse,
     UuidLookupPayload, UuidLookupResponse, ValidityCheckPayload, ValidityCheckResponse, 
-    EthLookupResponse, EthLookupPayload
+    EthLookupResponse, EthLookupPayload,
+    UserinfoLookupResponse,Userinfo2LookupResponse
 };
 use lazy_static::lazy_static;
 use log::*;
@@ -103,6 +104,25 @@ fn eth_to_user(req: &Request) -> Result<Response, AuthError> {
 }
 
 
+fn username_to_info(req: &Request) -> Result<Response, AuthError> {
+    let body = req.data().unwrap();
+    let payload: UsernameLookupPayload = serde_json::from_reader(body)?;
+    let uuid = auth::eth_to_uuid(&payload.username)?;
+    let ethaddr = auth::username_to_eth(&payload.username)?;
+    let response = UserinfoLookupResponse { uuid, ethaddr };
+    Ok(Response::json(&response))
+}
+
+
+fn uuid_to_info(req: &Request) -> Result<Response, AuthError> {
+    let body = req.data().unwrap();
+    let payload: UuidLookupPayload = serde_json::from_reader(body)?;
+    let username = auth::uuid_to_username(&payload.uuid)?;
+    let ethaddr = auth::username_to_eth(&payload.username)?;
+    let response = Userinfo2LookupResponse { username, ethaddr };
+    Ok(Response::json(&response))
+}
+
 fn register(req: &Request) -> Result<Response, AuthError> {
     println!("Server register process....");
     let body = req.data().unwrap();
@@ -148,6 +168,8 @@ pub fn start() {
                     "/username_to_uuid" => username_to_uuid(request),
                     "/uuid_to_username" => uuid_to_username(request),
                     "/eth_to_userinfo" => eth_to_user(request),
+                    "/username_to_info" => username_to_info(request),
+                    "/uuid_to_info" => uuid_to_info(request),
                     "/register" => ratelimit(request, register),
                     "/generate_token" => ratelimit(request, generate_token),
                     "/verify" => verify(request),

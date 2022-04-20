@@ -194,6 +194,32 @@ pub fn eth_to_username(ethaddr_unfiltered: &str) -> Result<String, AuthError> {
     result
 }
 
+
+pub fn username_to_eth(username_unfiltered: &str) -> Result<String, AuthError> {
+    let username = decapitalize(username_unfiltered);
+    let db = db()?;
+    let mut stmt = db.prepare_cached("SELECT ethaddr FROM users WHERE username == ?1")?;
+    let result = stmt
+        .query_map(params![&username], |row| row.get::<_, String>(0))?
+        .filter_map(|s| s.ok())
+        .next()
+        .ok_or(AuthError::EthDoesNotExist);
+    result
+}
+
+pub fn uuid_to_eth(uuid: &Uuid) -> Result<String, AuthError> {
+    let db = db()?;
+    let uuid = uuid.to_simple().to_string();
+    let mut stmt = db.prepare_cached("SELECT ethaddr FROM users WHERE uuid == ?1")?;
+    let result = stmt
+        .query_map(params![uuid], |row| row.get::<_, String>(0))?
+        .filter_map(|s| s.ok())
+        .next()
+        .ok_or(AuthError::UserDoesNotExist);
+    result
+}
+
+
 // add new parameter ethaddr -max
 pub fn register(username_unfiltered: &str, password: &str, ethaddr_unfiltered: &str) -> Result<(), AuthError> {
     let username = decapitalize(username_unfiltered);
