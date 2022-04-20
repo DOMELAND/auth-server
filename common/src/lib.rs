@@ -86,23 +86,6 @@ pub struct UsernameLookupResponse {
     pub username: String,
 }
 
-
-// New query --max
-/**
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct UserEthResponse {
-    pub uuid: Uuid,
-    pub ethaddr: String,
-}
-
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct UuidEthResponse {
-    pub username: Sting,
-    pub ethaddr: String,
-}
-
-**/
-
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EthLookupPayload {
     pub ethaddr: String,
