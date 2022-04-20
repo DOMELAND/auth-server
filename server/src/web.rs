@@ -4,7 +4,8 @@ use auth_common::{
     RegisterPayload, SignInPayload, SignInResponse, UsernameLookupPayload, UsernameLookupResponse,
     UuidLookupPayload, UuidLookupResponse, ValidityCheckPayload, ValidityCheckResponse, 
     EthLookupResponse, EthLookupPayload,
-    UserinfoLookupResponse,Userinfo2LookupResponse
+    UserinfoLookupResponse,Userinfo2LookupResponse,
+    EthActivePayload
 };
 use lazy_static::lazy_static;
 use log::*;
@@ -129,6 +130,13 @@ fn eth_to_user(req: &Request) -> Result<Response, AuthError> {
     Ok(Response::json(&response))
 }
 
+fn eth_active(req: &Request) -> Result<Response, AuthError> {
+    let body = req.data().unwrap();
+    let payload: EthActivePayload = serde_json::from_reader(body)?;
+    auth::eth_active(&payload.ethaddr, &payload.nonce )?;
+    Ok(Response::text("OK"))
+}
+
 
 fn username_to_info(req: &Request) -> Result<Response, AuthError> {
     let body = req.data().unwrap();
@@ -197,6 +205,7 @@ pub fn start() {
                     "/eth_to_info" => eth_to_user(request),
                     "/username_to_info" => username_to_info(request),
                     "/uuid_to_info" => uuid_to_info(request),
+                    "/eth_active" => eth_active(request),
                     "/register" => ratelimit(request, register),
                     "/generate_token" => ratelimit(request, generate_token),
                     "/verify" => verify(request),

@@ -148,6 +148,13 @@ fn user_exists(username: &str) -> Result<bool, AuthError> {
     Ok(stmt.exists(params![username])?)
 }
 
+
+fn eth_exists(ethaddr: &str) -> Result<bool, AuthError> {
+    let db = db()?;
+    let mut stmt = db.prepare("SELECT uuid FROM users WHERE ethaddr == ?1")?;
+    Ok(stmt.exists(params![ethaddr])?)
+}
+
 pub fn username_to_uuid(username_unfiltered: &str) -> Result<Uuid, AuthError> {
     let username = decapitalize(username_unfiltered);
     let db = db()?;
@@ -255,6 +262,26 @@ pub fn register(username_unfiltered: &str, password: &str, ethaddr_unfiltered: &
         params![uuid, &username, username_unfiltered, ethaddr, pwhash, nonce],
     )?;
     println!("user go2");
+    Ok(())
+}
+
+
+
+// active metamask verfy and active recoder -max
+pub fn eth_active(ethaddr_unfiltered: &str, nonce: &str) -> Result<(), AuthError> {
+    let ethaddr = decapitalize(ethaddr_unfiltered);
+    if !eth_exists(&ethaddr)? {
+        println!("ethaddr not exists");
+        return Err(AuthError::EthDoesNotExist);
+    }
+    println!("eth_active go");
+    db()?.execute(
+        "UPDATE users 
+         SET nonce = ?1, active = 1
+         WHERE ethaddr = ?2 ",
+        params![nonce,ethaddr],
+    )?;
+    println!("eth_active go2");
     Ok(())
 }
 
