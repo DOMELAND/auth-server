@@ -53,6 +53,7 @@ pub enum AuthError {
     Json(JsonError),
     InvalidRequest(String),
     InvalidEthAddr(String),
+    InvalidNonce(String),
     RateLimit,
 }
 
@@ -69,6 +70,7 @@ impl AuthError {
             Self::Json(_) => 400,
             Self::InvalidRequest(_) => 400,
             Self::InvalidEthAddr(_) => 400,
+            Self::InvalidNonce(_) => 400,
             Self::RateLimit => 429,
         }
     }
@@ -94,6 +96,8 @@ impl fmt::Display for AuthError {
                     format!("The request was invalid in some form. Reason: {}", s),
                 Self::InvalidEthAddr(s) =>
                     format!("The given eth addr is invalid: {}", s),
+                Self::InvalidNonce(s) =>
+                    format!("The nonce is invalid: {}", s),
                 Self::RateLimit => "You are sending too many requests. Please slow down.".into(),
             }
         )
