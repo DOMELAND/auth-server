@@ -5,7 +5,7 @@ This is the implementation of the auth server and command-line client for Domela
 ## Dependencies
 
 The Auth server is implemented using Rust.
-For more information about Veloren development, please refer to: https://book.veloren.net/
+For more information about Domeland/Veloren development, please refer to: https://yielddao.io/
 
 ## Build the server
 To build the server, you can simply run the following command: `cargo build`
