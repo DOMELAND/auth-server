@@ -167,7 +167,7 @@ pub fn start() {
                 let result = match path {
                     "/username_to_uuid" => username_to_uuid(request),
                     "/uuid_to_username" => uuid_to_username(request),
-                    "/eth_to_userinfo" => eth_to_user(request),
+                    "/eth_to_info" => eth_to_user(request),
                     "/username_to_info" => username_to_info(request),
                     "/uuid_to_info" => uuid_to_info(request),
                     "/register" => ratelimit(request, register),

@@ -89,7 +89,7 @@ Body (Json):
 
 ##### API: query userinfo by ethereum address
 ```
-URL: http://localhost:19253/eth_to_userinfo
+URL: http://localhost:19253/eth_to_info
 Method: POST
 Body (Json):
 {
