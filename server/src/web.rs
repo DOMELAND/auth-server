@@ -79,7 +79,6 @@ fn username_to_uuid(req: &Request) -> Result<Response, AuthError> {
     let body = req.data().unwrap();
     let payload: UuidLookupPayload = serde_json::from_reader(body)?;
     let uuid = auth::username_to_uuid(&payload.username)?;
-    let ethaddr = auth::username_to_uuid(&payload.ethaddr)?;
     let response = UuidLookupResponse { uuid, ethaddr };
     Ok(Response::json(&response))
 }

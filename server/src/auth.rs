@@ -45,6 +45,7 @@ fn decapitalize(string: &str) -> String {
 pub enum AuthError {
     UserExists,
     UserDoesNotExist,
+    EthDoesNotExist,
     InvalidLogin,
     InvalidToken,
     Db(DbError),
