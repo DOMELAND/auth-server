@@ -277,7 +277,7 @@ pub fn eth_active(ethaddr_unfiltered: &str, nonce: &str) -> Result<(), AuthError
     println!("eth_active go");
     db()?.execute(
         "UPDATE users 
-         SET nonce = ?1, active = 1
+         SET nonce = ?1, actived = 1
          WHERE ethaddr = ?2 ",
         params![nonce,ethaddr],
     )?;
