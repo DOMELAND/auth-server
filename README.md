@@ -80,3 +80,12 @@ Body (Json):
     "username": "max123"
 }
 ```
+
+```
+URL: http://localhost:19253/eth_to_userinfo
+Method: POST
+Body (Json):
+{
+    "ethaddr": "0x8c5Eb6CcB92e551ec1671cdafF7b55d44A28615a"
+}
+```
