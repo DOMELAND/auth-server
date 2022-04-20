@@ -121,11 +121,7 @@ Body (Json):
 
 
 ##### API: query userinfo by ethereum address
-<<<<<<< HEAD
-###### Return userinfo include "username"、"uuid"、"nonce"
-=======
 ###### Return userinfo include "username"、"uuid"、"nonce"、"actived"
->>>>>>> dev
 ```
 URL: http://localhost:19253/eth_to_info
 Method: POST
