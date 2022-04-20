@@ -126,7 +126,8 @@ fn eth_to_user(req: &Request) -> Result<Response, AuthError> {
     let uuid = auth::eth_to_uuid(&payload.ethaddr)?;
     let username = auth::eth_to_username(&payload.ethaddr)?;
     let nonce = auth::eth_to_nonce(&payload.ethaddr)?;
-    let response = EthLookupResponse { username, uuid, nonce};
+    let actived = auth::eth_to_actived(&payload.ethaddr)?;
+    let response = EthLookupResponse { username, uuid, nonce, actived};
     Ok(Response::json(&response))
 }
 

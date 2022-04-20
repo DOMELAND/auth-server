@@ -219,6 +219,19 @@ pub fn eth_to_nonce(ethaddr_unfiltered: &str) -> Result<String, AuthError> {
     result
 }
 
+// get actived value by ethaddr
+pub fn eth_to_actived(ethaddr_unfiltered: &str) -> Result<i32, AuthError> {
+    let ethaddr = decapitalize(ethaddr_unfiltered);
+    let db = db()?;
+    let mut stmt = db.prepare_cached("SELECT actived FROM users WHERE ethaddr == ?1")?;
+    let result = stmt
+        .query_map(params![&ethaddr], |row| row.get::<_, String>(0))?
+        .filter_map(|s| s.ok())
+        .next()
+        .ok_or(AuthError::EthDoesNotExist);
+    result
+}
+
 pub fn username_to_eth(username_unfiltered: &str) -> Result<String, AuthError> {
     let username = decapitalize(username_unfiltered);
     let db = db()?;

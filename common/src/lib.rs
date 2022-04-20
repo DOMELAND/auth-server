@@ -106,6 +106,7 @@ pub struct EthLookupResponse {
     pub username: String,
     pub uuid: Uuid,
     pub nonce: String,
+    pub actived: i32,
 }
 
 
