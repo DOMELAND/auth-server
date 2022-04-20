@@ -99,8 +99,8 @@ fn eth_to_user(req: &Request) -> Result<Response, AuthError> {
     let payload: EthLookupPayload = serde_json::from_reader(body)?;
     let uuid = auth::eth_to_uuid(&payload.ethaddr)?;
     let username = auth::eth_to_username(&payload.ethaddr)?;
-    let nonce = auth:eth_to_nonce(&payload.ethaddr)?;
-    let response = EthLookupResponse { username, uuid ,nonce};
+    let nonce = auth::eth_to_nonce(&payload.ethaddr)?;
+    let response = EthLookupResponse { username, uuid, nonce};
     Ok(Response::json(&response))
 }
 
