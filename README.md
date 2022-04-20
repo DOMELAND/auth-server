@@ -24,16 +24,16 @@ A docker compose file is also provided to provide the auth server as a service. 
 #### Deployment notice
  To keep your data secured, it is essential to setup the server to be connected to through a public network run behind a TLS terminator such as nginx
 
-### Test   -- max 
- To test the DOMELAND Account web sevice, follow is a case ( tools: postman):
+### Test    
+ To test the DOMELAND Account web sevice, following are some cases ( tools: postman):
 
-API: ping-pong Test
+##### API: ping-pong Test
 ```
  URL:  http://localhost:19253/ping
  Method: GET
 ```
 
-API: account register 
+##### API: account register 
 ```
  URL:  http://localhost:19253/register
  Method: POST
@@ -45,7 +45,7 @@ API: account register
  } 
  ```
  
-API: generate one-time access token to  game-server
+##### API: generate one-time access token to  game-server
 ```
  URL: http://localhost:19253/generate_token
  Method: POST
@@ -56,7 +56,7 @@ API: generate one-time access token to  game-server
  } 
  ```
 
-API: verify one-time token
+##### API: verify one-time token
 ```
  URL: http://localhost:19253/verify
  Method: POST
@@ -67,7 +67,7 @@ API: verify one-time token
     }
  }
 ```
-API: query username by uuid
+##### API: query username by uuid
 ```
 URL: http://localhost:19253/uuid_to_username
 Method: POST
@@ -77,7 +77,7 @@ Body (Json):
 }
 ```
 
-API: query uuid by username
+##### API: query uuid by username
 ```
 URL: http://localhost:19253/username_to_uuid
 Method: POST
@@ -87,7 +87,7 @@ Body (Json):
 }
 ```
 
-API: query userinfo by ethereum address
+##### API: query userinfo by ethereum address
 ```
 URL: http://localhost:19253/eth_to_userinfo
 Method: POST
@@ -96,7 +96,7 @@ Body (Json):
     "ethaddr": "0x8c5Eb6CcB92e551ec1671cdafF7b55d44A28615a"
 }
 ```
-API: query userinfo by username
+##### API: query userinfo by username
 ```
 URL: http://localhost:19253/username_to_info
 Method: POST
@@ -105,7 +105,7 @@ Body (Json):
     "username": "max"
 }
 ```
-API: query userinfo by uuid
+##### API: query userinfo by uuid
 ```
 URL: http://localhost:19253/uuid_to_info
 Method: POST
