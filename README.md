@@ -28,7 +28,8 @@ For a deployment-ready server, you can build docker image using `./build-server-
 To keep your data secured, it is essential to setup the server to be connected to through a public network run behind a TLS terminator such as nginx
 
 ## Test    
- To test the DOMELAND Account web sevice, following are some cases ( tools: https://www.apifox.cn/web/):
+ To test the DOMELAND Account web sevice, following are some cases 
+ ( test tools: https://www.apifox.cn/web/  or POSTMAN):
 
 ##### API: ping-pong Test
 ```
