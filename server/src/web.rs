@@ -107,7 +107,7 @@ fn eth_to_user(req: &Request) -> Result<Response, AuthError> {
 fn username_to_info(req: &Request) -> Result<Response, AuthError> {
     let body = req.data().unwrap();
     let payload: UsernameLookupPayload = serde_json::from_reader(body)?;
-    let uuid = auth::eth_to_uuid(&payload.username)?;
+    let uuid = auth::username_to_uuid(&payload.username)?;
     let ethaddr = auth::username_to_eth(&payload.username)?;
     let response = UserinfoLookupResponse { uuid, ethaddr };
     Ok(Response::json(&response))
@@ -118,7 +118,7 @@ fn uuid_to_info(req: &Request) -> Result<Response, AuthError> {
     let body = req.data().unwrap();
     let payload: UuidLookupPayload = serde_json::from_reader(body)?;
     let username = auth::uuid_to_username(&payload.uuid)?;
-    let ethaddr = auth::username_to_eth(&payload.username)?;
+    let ethaddr = auth::uuid_to_eth(&payload.uuid)?;
     let response = Userinfo2LookupResponse { username, ethaddr };
     Ok(Response::json(&response))
 }
