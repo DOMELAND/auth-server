@@ -225,7 +225,7 @@ pub fn eth_to_actived(ethaddr_unfiltered: &str) -> Result<i32, AuthError> {
     let db = db()?;
     let mut stmt = db.prepare_cached("SELECT actived FROM users WHERE ethaddr == ?1")?;
     let result = stmt
-        .query_map(params![&ethaddr], |row| row.get::<_, String>(0))?
+        .query_map(params![&ethaddr], |row| row.get::<_, i32>(0))?
         .filter_map(|s| s.ok())
         .next()
         .ok_or(AuthError::EthDoesNotExist);
