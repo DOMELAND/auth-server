@@ -26,9 +26,16 @@ A docker compose file is also provided to provide the auth server as a service. 
 
 ### Test   -- max 
  To test the DOMELAND Account web sevice, follow is a case ( tools: postman):
+
+
+```
+ URL:  http://localhost:19253/ping
+ Method: GET
+```
+
 ```
  URL:  http://localhost:19253/register
- Method: Post
+ Method: POST
  Body (Json):
  {
    "username":"max123",
@@ -39,7 +46,7 @@ A docker compose file is also provided to provide the auth server as a service. 
  
 ```
  URL: http://localhost:19253/generate_token
- Method: Post
+ Method: POST
  Body (Json):
  {
    "username":"max123",
@@ -49,7 +56,7 @@ A docker compose file is also provided to provide the auth server as a service. 
 
 ```
  URL: http://localhost:19253/verify
- Method: Post
+ Method: POST
  Body (Json):
  {
     "token": {
@@ -59,7 +66,7 @@ A docker compose file is also provided to provide the auth server as a service. 
 ```
 ```
 URL: http://localhost:19253/uuid_to_username
-Method: Post
+Method: POST
 Body (Json):
 {
     "uuid": "6cfc2a33-5ea9-456b-bfdf-4c88e7b99bd4"
@@ -67,7 +74,7 @@ Body (Json):
 ```
 ```
 URL: http://localhost:19253/username_to_uuid
-Method: Post
+Method: POST
 Body (Json):
 {
     "username": "max123"
