@@ -272,7 +272,7 @@ pub fn eth_active(ethaddr_unfiltered: &str) -> Result<(), AuthError> {
     }
     println!("eth_active go");
     db()?.execute(
-        "UPDATE users SET actived=1  WHERE ethaddr=?1",
+        "UPDATE users SET actived = 1  WHERE ethaddr = ?1",
         params![ethaddr],
     )?;
     println!("eth_active go2");
