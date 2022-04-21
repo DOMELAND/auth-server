@@ -138,7 +138,7 @@ fn eth_active(req: &Request) -> Result<Response, AuthError> {
 
 fn change_pass(req: &Request) -> Result<Response, AuthError> {
     let body = req.data().unwrap();
-    let payload: EthActivePayload = serde_json::from_reader(body)?;
+    let payload: ChangePassPayload = serde_json::from_reader(body)?;
     verify_password(&payload.password)?;
     verify_ethaddr(&payload.ethaddr)?;
     auth::change_passwd(&payload.ethaddr, &payload.password )?;

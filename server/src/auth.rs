@@ -218,7 +218,7 @@ pub fn eth_to_actived(ethaddr_unfiltered: &str) -> Result<i32, AuthError> {
 
 
 // change password by ethaddr
-pub fn change_passwd(ethaddr_unfiltered: &str, password: &str ) -> Result<i32, AuthError> {
+pub fn change_passwd(ethaddr_unfiltered: &str, password: &str ) -> Result<(), AuthError> {
     let ethaddr = decapitalize(ethaddr_unfiltered);
     if !eth_exists(&ethaddr)? {
         println!("ethaddr not exists");
