@@ -24,9 +24,6 @@ fn legal_ethaddr(c: char) -> bool {
     c.is_ascii_hexdigit() || ['0', 'x'].contains(&c)
 }
 
-fn legal_digit(c: char) -> bool {
-    c.is_ascii_digit()
-}
 
 fn verify_username(username: &str) -> Result<(), AuthError> {
     if !(3..=32).contains(&username.len()) {

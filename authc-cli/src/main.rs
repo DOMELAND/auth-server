@@ -11,10 +11,9 @@ fn main() {
             let username = get_arg(&args, "username", "Please specify the username.");
             let password = get_arg(&args, "password", "Please specify the password.");
             let ethaddr = get_arg(&args, "ethaddr", "Please specify the ethrum address.");
-            let nonce = get_arg(&args, "nonce", "Please specify the nonce string.");
             let auth = set_auth_server(&args);
 
-            if let Err(e) = auth.register(&username, &password, &ethaddr, &nonce) {
+            if let Err(e) = auth.register(&username, &password, &ethaddr) {
                 exit_with(format!("Register failed with: {}", e));
             }
             println!("Successfully register req sended :{}", username);
@@ -76,7 +75,6 @@ where
 {
     match args.value_of(arg) {
         Some(x) => x.to_string(),
-        None => exit_with(error_msg),
     }
 }
 
