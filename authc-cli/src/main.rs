@@ -75,6 +75,7 @@ where
 {
     match args.value_of(arg) {
         Some(x) => x.to_string(),
+        None => exit_with(error_msg),
     }
 }
 
