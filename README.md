@@ -132,3 +132,15 @@ Body (Json):
     "ethaddr": "0x8c5Eb6CcB92e551ec1671cdafF7b55d44A28615a"
 }
 ```
+
+
+###### API change password by eth_addr
+```
+URL: http://localhost:19253/change_pass
+Method: POST
+Body (Json):
+{
+    "ethaddr": "0x8c5Eb6CcB92e551ec1671cdafF7b55d44A28615a"
+    "password": "123456789max"
+}
+```

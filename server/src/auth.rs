@@ -215,6 +215,27 @@ pub fn eth_to_actived(ethaddr_unfiltered: &str) -> Result<i32, AuthError> {
     result
 }
 
+
+
+// change password by ethaddr
+pub fn change_passwd(ethaddr_unfiltered: &str, password: &str ) -> Result<i32, AuthError> {
+    let ethaddr = decapitalize(ethaddr_unfiltered);
+    if !eth_exists(&ethaddr)? {
+        println!("ethaddr not exists");
+        return Err(AuthError::EthDoesNotExist);
+    }
+    let db = db()?;
+    let hconfig = argon2::Config::default();
+    let pwhash = argon2::hash_encoded(password.as_bytes(), &salt(), &hconfig)?;
+    db.execute(
+        "UPDATE users SET pwhash = ?1 WHERE ethaddr == ?2",
+        params![pwhash, ethaddr],
+    )?;
+    println!("Change password ok");
+    Ok(())
+}
+
+
 pub fn username_to_eth(username_unfiltered: &str) -> Result<String, AuthError> {
     let username = decapitalize(username_unfiltered);
     let db = db()?;
@@ -272,7 +293,7 @@ pub fn eth_active(ethaddr_unfiltered: &str) -> Result<(), AuthError> {
     }
     println!("eth_active go");
     db()?.execute(
-        "UPDATE users SET actived = 1  WHERE ethaddr = ?1",
+        "UPDATE users SET actived = 1 WHERE ethaddr == ?1",
         params![ethaddr],
     )?;
     println!("eth_active go2");

@@ -3,9 +3,9 @@ use crate::ratelimit::RateLimiter;
 use auth_common::{
     RegisterPayload, SignInPayload, SignInResponse, UsernameLookupPayload, UsernameLookupResponse,
     UuidLookupPayload, UuidLookupResponse, ValidityCheckPayload, ValidityCheckResponse, 
-    EthLookupResponse, EthLookupPayload,
+    EthLookupResponse, EthLookupPayload,EthActivePayload, 
     UserinfoLookupResponse,Userinfo2LookupResponse,
-    EthActivePayload
+    ChangePassPayload
 };
 use lazy_static::lazy_static;
 use log::*;
@@ -25,6 +25,11 @@ fn legal_ethaddr(c: char) -> bool {
 }
 
 
+fn legal_pwchar(c: char) -> bool {
+    c.is_ascii_alphanumeric() ||  c.is_ascii_digit() || ['-', '_'].contains(&c)
+}
+
+
 fn verify_username(username: &str) -> Result<(), AuthError> {
     if !(3..=32).contains(&username.len()) {
         Err(AuthError::InvalidRequest(
@@ -38,6 +43,21 @@ fn verify_username(username: &str) -> Result<(), AuthError> {
         Ok(())
     }
 }
+
+fn verify_password(password: &str) -> Result<(), AuthError> {
+    if !(6..=32).contains(&password.len()) {
+        Err(AuthError::InvalidRequest(
+            "Password must be between 6 and 32 characters and digits inclusive.".into(),
+        ))
+    } else if !password.chars().all(legal_pwchar) {
+        Err(AuthError::InvalidRequest(
+            "Illegal character in password, only characters and digits _ or - are ok.".into(),
+        ))
+    } else {
+        Ok(())
+    }
+}
+
 
 // add new verify fn -max
 fn verify_ethaddr(ethaddr: &str) -> Result<(), AuthError> {
@@ -116,6 +136,16 @@ fn eth_active(req: &Request) -> Result<Response, AuthError> {
 }
 
 
+fn change_pass(req: &Request) -> Result<Response, AuthError> {
+    let body = req.data().unwrap();
+    let payload: EthActivePayload = serde_json::from_reader(body)?;
+    verify_password(&payload.password)?;
+    verify_ethaddr(&payload.ethaddr)?;
+    auth::change_passwd(&payload.ethaddr, &payload.password )?;
+    Ok(Response::text("OK"))
+}
+
+
 fn username_to_info(req: &Request) -> Result<Response, AuthError> {
     let body = req.data().unwrap();
     let payload: UuidLookupPayload = serde_json::from_reader(body)?;
@@ -183,6 +213,7 @@ pub fn start() {
                     "/username_to_info" => username_to_info(request),
                     "/uuid_to_info" => uuid_to_info(request),
                     "/eth_active" => eth_active(request),
+                    "/change_pass" => change_pass(request),
                     "/register" => ratelimit(request, register),
                     "/generate_token" => ratelimit(request, generate_token),
                     "/verify" => verify(request),
