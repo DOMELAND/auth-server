@@ -84,7 +84,7 @@ impl fmt::Display for AuthError {
                 Self::UserDoesNotExist => "That user does not exist.".into(),
                 Self::EthDoesNotExist => "That ethereum address does not exist.".into(),
                 Self::InvalidLogin =>
-                    "The username + password + Eth_addr combination was incorrect or the user does not exist."
+                    "The username + password or ethaddr combination was incorrect or the user does not exist."
                         .into(),
                 Self::InvalidToken => "The given token is invalid.".into(),
                 Self::Db(err) => format!("Database error: {}", err),
