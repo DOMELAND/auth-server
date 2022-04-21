@@ -39,13 +39,11 @@ impl AuthClient {
         username: impl AsRef<str>,
         password: impl AsRef<str>,
         ethaddr:  impl AsRef<str>,    // new add -max
-        nonce:  impl AsRef<str>,    // new add  -max
     ) -> Result<(), AuthClientError> {
         let data = RegisterPayload {
             username: username.as_ref().to_owned(),
             password: net_prehash(password.as_ref()),
             ethaddr: ethaddr.as_ref().to_owned(),
-            nonce:  nonce.as_ref().to_owned(),
         };
         let ep = self.provider.join("register")?;
         self.client.post(ep).json(&data).send()?;

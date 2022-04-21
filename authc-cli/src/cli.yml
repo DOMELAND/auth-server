@@ -18,10 +18,6 @@ subcommands:
                 required: true
                 display_order: 2
                 takes_value: true
-            - nonce:
-                required: true
-                display_order: 3
-                takes_value: true
             - auth:
                 help: The Auth server to use.
                 required: false

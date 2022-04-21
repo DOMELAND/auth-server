@@ -62,25 +62,6 @@ fn verify_ethaddr(ethaddr: &str) -> Result<(), AuthError> {
 }
 
 
-// add new verify fn -max
-fn verify_nonce(nonce: &str) -> Result<(), AuthError> {
-    //nonce is uint64, so it's 3~64 characters length.
-    if !(3..=19).contains(&nonce.len()) { 
-        println!("nonce verify error 1");
-        Err(AuthError::InvalidNonce(
-            "nonce must be uint64 in digit-chars, so we special it is 3~19 digit char length.".into(),
-        ))
-    } else if !nonce.chars().all(legal_digit) {
-        println!("nonce verify error 2");
-        Err(AuthError::InvalidEthAddr(
-            "Illegal character in nonce (uint64 in char).".into(),
-        ))
-    } else {
-        println!("nonce (uint64 in char) verify ok");
-        Ok(())
-    }
-}
-
 
 fn ratelimit(
     req: &Request,
@@ -125,16 +106,15 @@ fn eth_to_user(req: &Request) -> Result<Response, AuthError> {
     let payload: EthLookupPayload = serde_json::from_reader(body)?;
     let uuid = auth::eth_to_uuid(&payload.ethaddr)?;
     let username = auth::eth_to_username(&payload.ethaddr)?;
-    let nonce = auth::eth_to_nonce(&payload.ethaddr)?;
     let actived = auth::eth_to_actived(&payload.ethaddr)?;
-    let response = EthLookupResponse { username, uuid, nonce, actived};
+    let response = EthLookupResponse { username, uuid, actived};
     Ok(Response::json(&response))
 }
 
 fn eth_active(req: &Request) -> Result<Response, AuthError> {
     let body = req.data().unwrap();
     let payload: EthActivePayload = serde_json::from_reader(body)?;
-    auth::eth_active(&payload.ethaddr, &payload.nonce )?;
+    auth::eth_active(&payload.ethaddr )?;
     Ok(Response::text("OK"))
 }
 
@@ -164,8 +144,7 @@ fn register(req: &Request) -> Result<Response, AuthError> {
     let payload: RegisterPayload = serde_json::from_reader(body)?;
     verify_username(&payload.username)?;
     verify_ethaddr(&payload.ethaddr)?;   // new verify  -max
-    verify_nonce(&payload.nonce)?;   // new verify  -max   
-    auth::register(&payload.username, &payload.password, &payload.ethaddr, &payload.nonce)?;
+    auth::register(&payload.username, &payload.password, &payload.ethaddr)?;
     println!("register ok");
     Ok(Response::text("Ok"))
 }

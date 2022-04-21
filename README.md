@@ -34,7 +34,6 @@ A docker compose file is also provided to provide the auth server as a service. 
 ```
 
 #####  API: account register 
-###### param "nonce" is Uint64 in digit-char （ 3~19 digit chars length ）
 ```
  URL:  http://localhost:19253/register
  Method: POST
@@ -42,8 +41,7 @@ A docker compose file is also provided to provide the auth server as a service. 
  {
    "username":"max123",
    "password":"123456",
-   "ethaddr":"0x9c5Eb6CcB92e551ec1671cdafF7b55d44A28615b",
-   "nonce":"324899343449823"
+   "ethaddr":"0x9c5Eb6CcB92e551ec1671cdafF7b55d44A28615b"
  } 
  ```
  
@@ -108,20 +106,19 @@ Body (Json):
 }
 ```
 
-##### API: Active user recorder & reset nonce velue
+##### API: Active user recorder 
 ```
 URL: http://localhost:19253/eth_active
 Method: POST
 Body (Json):
 {
        "ethaddr": "0x8c5Eb6CcB92e551ec1671cdafF7b55d44A28615a",
-       "nonce": "974536234064543"
 }
 ```
 
 
 ##### API: query userinfo by ethereum address
-###### Return userinfo include "username"、"uuid"、"nonce"、"actived"
+###### Return userinfo include "username"、"uuid"、"actived"
 ```
 URL: http://localhost:19253/eth_to_info
 Method: POST

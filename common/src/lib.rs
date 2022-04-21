@@ -43,7 +43,6 @@ pub struct RegisterPayload {
     pub username: String,
     pub password: String,
     pub ethaddr: String,
-    pub nonce: String,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -97,7 +96,6 @@ pub struct EthLookupPayload {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct EthActivePayload {
     pub ethaddr: String,
-    pub nonce: String,
 }
 
 
@@ -105,7 +103,6 @@ pub struct EthActivePayload {
 pub struct EthLookupResponse {
     pub username: String,
     pub uuid: Uuid,
-    pub nonce: String,
     pub actived: i32,
 }
 

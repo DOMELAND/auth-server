@@ -53,7 +53,6 @@ pub enum AuthError {
     Json(JsonError),
     InvalidRequest(String),
     InvalidEthAddr(String),
-    InvalidNonce(String),
     RateLimit,
 }
 
@@ -70,7 +69,6 @@ impl AuthError {
             Self::Json(_) => 400,
             Self::InvalidRequest(_) => 400,
             Self::InvalidEthAddr(_) => 400,
-            Self::InvalidNonce(_) => 400,
             Self::RateLimit => 429,
         }
     }
@@ -96,8 +94,6 @@ impl fmt::Display for AuthError {
                     format!("The request was invalid in some form. Reason: {}", s),
                 Self::InvalidEthAddr(s) =>
                     format!("The given eth addr is invalid: {}", s),
-                Self::InvalidNonce(s) =>
-                    format!("The nonce is invalid: {}", s),
                 Self::RateLimit => "You are sending too many requests. Please slow down.".into(),
             }
         )
@@ -132,7 +128,6 @@ pub fn init_db() -> Result<(), AuthError> {    //add ethaddr filed in users tabl
             username TEXT NOT NULL UNIQUE,
             display_username TEXT NOT NULL UNIQUE,
             ethaddr TEXT NOT NULL UNIQUE,
-            nonce TEXT DEFAULT '0' NOT NULL,     
             actived INTEGER DEFAULT -1 NOT NULL,
             pwhash TEXT NOT NULL
         )
@@ -207,18 +202,6 @@ pub fn eth_to_username(ethaddr_unfiltered: &str) -> Result<String, AuthError> {
     result
 }
 
-pub fn eth_to_nonce(ethaddr_unfiltered: &str) -> Result<String, AuthError> {
-    let ethaddr = decapitalize(ethaddr_unfiltered);
-    let db = db()?;
-    let mut stmt = db.prepare_cached("SELECT nonce FROM users WHERE ethaddr == ?1")?;
-    let result = stmt
-        .query_map(params![&ethaddr], |row| row.get::<_, String>(0))?
-        .filter_map(|s| s.ok())
-        .next()
-        .ok_or(AuthError::EthDoesNotExist);
-    result
-}
-
 // get actived value by ethaddr
 pub fn eth_to_actived(ethaddr_unfiltered: &str) -> Result<i32, AuthError> {
     let ethaddr = decapitalize(ethaddr_unfiltered);
@@ -258,7 +241,7 @@ pub fn uuid_to_eth(uuid: &Uuid) -> Result<String, AuthError> {
 
 
 // add new parameter ethaddr -max
-pub fn register(username_unfiltered: &str, password: &str, ethaddr_unfiltered: &str, nonce: &str) -> Result<(), AuthError> {
+pub fn register(username_unfiltered: &str, password: &str, ethaddr_unfiltered: &str) -> Result<(), AuthError> {
     let username = decapitalize(username_unfiltered);
     let ethaddr = decapitalize(ethaddr_unfiltered);
     if user_exists(&username)? {
@@ -271,8 +254,8 @@ pub fn register(username_unfiltered: &str, password: &str, ethaddr_unfiltered: &
     let pwhash = argon2::hash_encoded(password.as_bytes(), &salt(), &hconfig)?;
     println!("user go");
     db()?.execute(
-        "INSERT INTO users (uuid, username, display_username, ethaddr, pwhash, nonce) VALUES(?1, ?2, ?3, ?4, ?5, ?6)",
-        params![uuid, &username, username_unfiltered, ethaddr, pwhash, nonce],
+        "INSERT INTO users (uuid, username, display_username, ethaddr, pwhash) VALUES(?1, ?2, ?3, ?4, ?5)",
+        params![uuid, &username, username_unfiltered, ethaddr, pwhash],
     )?;
     println!("user go2");
     Ok(())
@@ -281,7 +264,7 @@ pub fn register(username_unfiltered: &str, password: &str, ethaddr_unfiltered: &
 
 
 // active metamask verfy and active recoder -max
-pub fn eth_active(ethaddr_unfiltered: &str, nonce: &str) -> Result<(), AuthError> {
+pub fn eth_active(ethaddr_unfiltered: &str) -> Result<(), AuthError> {
     let ethaddr = decapitalize(ethaddr_unfiltered);
     if !eth_exists(&ethaddr)? {
         println!("ethaddr not exists");
@@ -290,9 +273,9 @@ pub fn eth_active(ethaddr_unfiltered: &str, nonce: &str) -> Result<(), AuthError
     println!("eth_active go");
     db()?.execute(
         "UPDATE users 
-         SET nonce = ?1, actived = 1
+         SET actived = 1
          WHERE ethaddr = ?2 ",
-        params![nonce,ethaddr],
+        params![ethaddr],
     )?;
     println!("eth_active go2");
     Ok(())
