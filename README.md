@@ -18,14 +18,18 @@ You can run a local server with the following command: `cargo run`.
 ### Docker image
 For a deployment-ready server, you can build docker image using `./build-server-dockerimage.sh` or without cloning the repo `docker build -t auth-server:latest https://gitlab.com/veloren/auth.git`. Docker will have to be installed.
 
-### Run the auth server as a service using Docker Compose
-A docker compose file is also provided to provide the auth server as a service. You'll need docker-compose for that.
+### Run the auth server as a service using pm2
+ You can install PM2 , and use pm2 run the auth-server as a service. <br>
+ 1. first install PM2 : `npm install pm2@latest -g` <br>
+ 2. then run auth-server by PM2 : `pm2 start target/debug/auth-server`<br>
+ 3. more PM2 infomation: https://pm2.keymetrics.io/docs/usage/quick-start/ <br>
 
 #### Deployment notice
- To keep your data secured, it is essential to setup the server to be connected to through a public network run behind a TLS terminator such as nginx
+To keep your data secured, it is essential to setup the server to be connected to through a public network run behind a TLS terminator such as nginx
 
 ## Test    
- To test the DOMELAND Account web sevice, following are some cases ( tools: https://www.apifox.cn/web/):
+ To test the DOMELAND Account web sevice, following are some cases  <br>
+ ( test tools: https://www.apifox.cn/web/  or POSTMAN):
 
 ##### API: ping-pong Test
 ```
@@ -118,6 +122,7 @@ Body (Json):
 
 
 ##### API: query userinfo by ethereum address
+
 ###### Return userinfo include "username"、"uuid"、"actived"
 ```
 URL: http://localhost:19253/eth_to_info
