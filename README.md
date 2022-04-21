@@ -134,7 +134,7 @@ Body (Json):
 ```
 
 
-###### API change password by eth_addr
+###### API change password by eth_address
 ```
 URL: http://localhost:19253/change_pass
 Method: POST
